@@ -5,7 +5,8 @@ const addReading = () => {
 
     const [bloodSugar, setBloodSugar] = useState({
         value: 0,
-        timeStamp: new Date()
+        timeStamp: new Date(),
+        notes: ''
     });
 
     const [status, setStatus] = useState('');
@@ -24,12 +25,14 @@ const addReading = () => {
     }
 
     const saveReading = () => {
-        const history = JSON.parse(window.localStorage.getItem('history')) || [];
+        const history = JSON.parse(window.localStorage.getItem('readingHistory')) || [];
         history.push(bloodSugar);
-        window.localStorage.setItem('history', JSON.stringify(history));
+        console.log('history', history)
+        window.localStorage.setItem('readingHistory', JSON.stringify(history));
         setBloodSugar({
             value: 0,
-            timeStamp: new Date()
+            timeStamp: new Date(),
+            notes: ''
         })
         setStatus('Saved!\n' + JSON.stringify(bloodSugar, null, 2))
     }
@@ -55,6 +58,12 @@ const addReading = () => {
                         <input id="time" type="datetime-local" value={formatDateTime(bloodSugar.timeStamp)} onChange={e => setBloodSugar(prev => {
                             return { ...prev, timeStamp: new Date(e.target.value) }
                         })}></input>
+                </div>
+                <div>
+                    <label htmlFor="notes">Notes</label>
+                </div>
+                <div>
+                    <textarea id="notes" value={bloodSugar.notes} onChange={e => setBloodSugar(prev => {return {...prev, notes: e.target.value}})}></textarea>
                 </div>
                 <div></div>
                 <div>

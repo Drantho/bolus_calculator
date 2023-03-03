@@ -32,7 +32,7 @@ const history = () => {
 
             <h2>Blood Sugar Reading History</h2>
             <h3>Data</h3>
-            {readingHistory.map(item => <div key={item.timeStamp}>{new Date(item.timeStamp).toLocaleDateString()} {new Date(item.timeStamp).toLocaleTimeString()} - {item.value}</div>)}
+            {readingHistory.map(item => <div key={item.timeStamp}>{new Date(item.timeStamp).toLocaleDateString()} {new Date(item.timeStamp).toLocaleTimeString()} - {item.value}<p>{item.notes}</p></div>)}
             <h3>Raw</h3>
             <pre>
 {JSON.stringify(readingHistory, null, 2)}

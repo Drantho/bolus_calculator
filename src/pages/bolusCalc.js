@@ -8,7 +8,8 @@ const bolusCalc = () => {
 
     const [bloodSugar, setBloodSugar] = useState({
         value: null,
-        timeStamp: new Date()
+        timeStamp: new Date(),
+        bloodSugar: ''
     });
 
     const [status, setStatus] = useState('');
@@ -54,7 +55,8 @@ const bolusCalc = () => {
 
         setBloodSugar({
             value: 0,
-            timeStamp: new Date()
+            timeStamp: new Date(),
+            notes: ''
         });
 
         setBolus({
@@ -168,9 +170,15 @@ const bolusCalc = () => {
                 <div>
                     <input type="number" value={carbs} onChange={e => setCarbs(e.target.value)} />
                 </div>
+                <div>
+                    <label>Notes</label>
+                </div>
+                <div>
+                    <textarea value={bloodSugar.notes} onChange={e => setBloodSugar(prev => {return {...prev, notes: e.target.value}})} />
+                </div>
                 <div></div>
                 <div>
-                    <button onClick={calculateBolus}>Calculate</button><br />
+                    <button onClick={calculateBolus}>Save Reading and Calculate</button><br />
                 </div>
             </div>
 
