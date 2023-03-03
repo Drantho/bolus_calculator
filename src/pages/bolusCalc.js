@@ -19,7 +19,7 @@ const bolusCalc = () => {
         carbDose: 0,
         insulinOnBoard: 0,
         value: 0,
-        delivered: new Date()
+        delivered: new Date().toDateString()
     });
 
     const [carbs, setCarbs] = useState(0);
