@@ -2,9 +2,6 @@ import React, {useState, useEffect} from 'react'
 import Layout from '@/components/layout/Layout';
 
 const history = () => {
-
-    console.log('HEEERRREE!!!!!!!!!!!!!!!!! ', new Date('Mon Feb 27 2023 9:52:30 PM'))
-
     const [readingHistory, setReadingHistory] = useState([]);
     const [bolusHistory, setBolusHistory] = useState([]);
 
@@ -17,6 +14,9 @@ const history = () => {
 
     const [startDay, setStartDay] = useState('');
     const [endDay, setEndDay] = useState('');
+
+    const [minReading, setMinReading] = useState('');
+    const [maxReading, setMaxReading] = useState('');
 
     const [loaded, setLoaded] = useState(false);
 
@@ -55,6 +55,20 @@ const history = () => {
             history = history.filter(item => {
                 return dateCompare(new Date(item.timeStamp).setHours(0,0,0,0), endDate) <= 0;
             });
+        }
+        return history;
+    }
+
+    const filterReadings = history => {
+        if(minReading !== '') {
+            history = history.filter(item => {
+                return +item.value >= +minReading;
+            })
+        }
+        if(maxReading !== '') {
+            history = history.filter(item => {
+                return +item.value <= +maxReading;
+            })
         }
         return history;
     }
@@ -120,6 +134,12 @@ const history = () => {
         }
     }, [startDay, endDay])
 
+    useEffect(() => {
+        if(loaded) {
+            setFilteredReadingHistory(filterReadings(readingHistory));
+        }
+    }, [minReading, maxReading])
+
     Date.prototype.addHours = function(h) {
         this.setTime(this.getTime() + (h*60*60*1000));
         return this;
@@ -141,14 +161,24 @@ const history = () => {
                 <input type="date" value={endDay} onChange={e => setEndDay(e.target.value)} />
                 {endDay !== '' && <button onClick={() => setEndDay('')}>Clear</button>}
             </label>
+            <label>
+                Min Reading
+                <input type="number" value={minReading} onChange={e => setMinReading(e.target.value)} />
+                {minReading !== '' && <button onClick={() => setMinReading('')}>Clear</button>}
+            </label>
+            <label>
+                Max Reading
+                <input type="number" value={maxReading} onChange={e => setMaxReading(e.target.value)} />
+                {maxReading !== '' && <button onClick={() => setMaxReading('')}>Clear</button>}
+            </label>
 
             <h2>Overall Average</h2>
 
-            Average: {filteredReadingHistory.reduce((acc, item) => +acc + +item.value, 0) / filteredReadingHistory.length}<br/>
+            Average: {filteredReadingHistory.length ? (filteredReadingHistory?.reduce((acc, item) => +acc + +item.value, 0) / filteredReadingHistory.length).toFixed(0) : 'No readings'}<br/>
 
             <h2>Average by day</h2>
 
-            {historyByDay.map((day, index) => <div key={index}>{day.date}: {day.value}</div>)}
+            {historyByDay.length ? historyByDay.map((day, index) => <div key={index}>{day.date}: {day.value}</div>) : 'No readings'}
 
             <h2>Average by hour</h2>
 
