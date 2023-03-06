@@ -39,41 +39,43 @@ const addReading = () => {
 
     return (
         <Layout title="Add Reading">
-            <h1>Add Reading</h1>
-            <div className="input-table">
-                <div>
-                    <label htmlFor='bloodSugar'>
-                        Blood Sugar
-                    </label>
+            <section>
+                <h1>Add Reading</h1>
+                <div className="input-table">
+                    <div>
+                        <label htmlFor='bloodSugar'>
+                            Blood Sugar
+                        </label>
+                    </div>
+                    <div>
+                        <input id="bloodSugar" type="number" value={bloodSugar.value} onChange={onChange} />
+                    </div>
+                    <div>
+                        <label htmlFor="time">
+                            Time
+                        </label>
+                    </div>
+                    <div>
+                            <input id="time" type="datetime-local" value={formatDateTime(bloodSugar.timeStamp)} onChange={e => setBloodSugar(prev => {
+                                return { ...prev, timeStamp: new Date(e.target.value) }
+                            })}></input>
+                    </div>
+                    <div>
+                        <label htmlFor="notes">Notes</label>
+                    </div>
+                    <div>
+                        <textarea id="notes" value={bloodSugar.notes} onChange={e => setBloodSugar(prev => {return {...prev, notes: e.target.value}})}></textarea>
+                    </div>
+                    <div></div>
+                    <div>
+                        <button onClick={saveReading}>Save</button><br />
+                    </div>
                 </div>
-                <div>
-                    <input id="bloodSugar" type="number" value={bloodSugar.value} onChange={onChange} />
-                </div>
-                <div>
-                    <label htmlFor="time">
-                        Time
-                    </label>
-                </div>
-                <div>
-                        <input id="time" type="datetime-local" value={formatDateTime(bloodSugar.timeStamp)} onChange={e => setBloodSugar(prev => {
-                            return { ...prev, timeStamp: new Date(e.target.value) }
-                        })}></input>
-                </div>
-                <div>
-                    <label htmlFor="notes">Notes</label>
-                </div>
-                <div>
-                    <textarea id="notes" value={bloodSugar.notes} onChange={e => setBloodSugar(prev => {return {...prev, notes: e.target.value}})}></textarea>
-                </div>
-                <div></div>
-                <div>
-                    <button onClick={saveReading}>Save</button><br />
-                </div>
-            </div>
 
-            <pre>
-                {status}
-            </pre>
+                <pre>
+                    {status}
+                </pre>
+            </section>
         </Layout>
     )
 }

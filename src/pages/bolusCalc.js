@@ -141,87 +141,100 @@ const bolusCalc = () => {
 
     return (
         <Layout title="Bolus Calc">
-            <h1>Bolus Calc</h1>
+            <section>
+                <h1>Bolus Calc</h1>
+            </section>
             {(insulinRatio != 0 && carbRatio != 0 && targetBloodSugar != 0) ? <>
 
-                <h2>Background Data</h2>
-                <div className="input-table">
-                    <div>
-                        <label>
-                            Blood Sugar
-                        </label>
-                    </div>
-                    <div>
-                        <input type="number" value={bloodSugar.value} onChange={onChange} />
-                    </div>
-                    <div>
-                        <label>
-                            Time
-                        </label>
-                    </div>
-                    <div>
-                        <input type="datetime-local" value={formatDateTime(bloodSugar.timeStamp, 'blood sugar')} onChange={e => setBloodSugar(prev => {
-                            return { ...prev, timeStamp: new Date(e.target.value) }
-                        })}></input>
-                    </div>
-                    <div>
-                        <label>
-                            Carbs
-                        </label>
-                    </div>
-                    <div>
-                        <input type="number" value={carbs} onChange={e => setCarbs(e.target.value)} />
-                    </div>
-                    <div>
-                        <label>Notes</label>
-                    </div>
-                    <div>
-                        <textarea value={bloodSugar.notes} onChange={e => setBloodSugar(prev => { return { ...prev, notes: e.target.value } })} />
-                    </div>
-                    <div></div>
-                    <div>
-                        <button onClick={calculateBolus}>Save Reading and Calculate</button><br />
-                    </div>
-                </div>
+                <section>
 
-                <h2>Calculations</h2>
-                Correction: {bolus.correction}<br />
-                Carb Dose: {bolus.carbDose}<br />
-                Insulin on board: {bolus.insulinOnBoard}<br />
-                Total Bolus: {bolus.value}<br />
+                    <h2>Background Data</h2>
+                    <div className="input-table">
+                        <div>
+                            <label>
+                                Blood Sugar
+                            </label>
+                        </div>
+                        <div>
+                            <input type="number" value={bloodSugar.value} onChange={onChange} />
+                        </div>
+                        <div>
+                            <label>
+                                Time
+                            </label>
+                        </div>
+                        <div>
+                            <input type="datetime-local" value={formatDateTime(bloodSugar.timeStamp, 'blood sugar')} onChange={e => setBloodSugar(prev => {
+                                return { ...prev, timeStamp: new Date(e.target.value) }
+                            })}></input>
+                        </div>
+                        <div>
+                            <label>
+                                Carbs
+                            </label>
+                        </div>
+                        <div>
+                            <input type="number" value={carbs} onChange={e => setCarbs(e.target.value)} />
+                        </div>
+                        <div>
+                            <label>Notes</label>
+                        </div>
+                        <div>
+                            <textarea value={bloodSugar.notes} onChange={e => setBloodSugar(prev => { return { ...prev, notes: e.target.value } })} />
+                        </div>
+                        <div></div>
+                        <div>
+                            <button onClick={calculateBolus}>Save Reading and Calculate</button><br />
+                        </div>
+                    </div>
+                </section>
 
-                <h2>Bolus Data</h2>
+                <section>
 
-                <div className="input-table">
-                    <div>
-                        <label>
-                            Bolus Delivered
-                        </label>
+                    <h2>Calculations</h2>
+                    Correction: {bolus.correction}<br />
+                    Carb Dose: {bolus.carbDose}<br />
+                    Insulin on board: {bolus.insulinOnBoard}<br />
+                    Total Bolus: {bolus.value}<br />
+                </section>
+
+                <section>
+
+                    <h2>Bolus Data</h2>
+
+                    <div className="input-table">
+                        <div>
+                            <label>
+                                Bolus Delivered
+                            </label>
+                        </div>
+                        <div>
+                            <input type="number" value={bolus.value} onChange={bolusChanged} />
+                        </div>
+                        <div>
+                            <label>
+                                Time
+                            </label>
+                        </div>
+                        <div>
+                            <input type="datetime-local" value={formatDateTime(bolus.delivered, 'bolus')} onChange={e => setBolus(prev => {
+                                return { ...prev, timeStamp: new Date(e.target.value) }
+                            })}></input>
+                        </div>
+                        <div></div>
+                        <div>
+                            <button onClick={saveBolus}>Bolus Delivered</button><br />
+                        </div>
                     </div>
-                    <div>
-                        <input type="number" value={bolus.value} onChange={bolusChanged} />
-                    </div>
-                    <div>
-                        <label>
-                            Time
-                        </label>
-                    </div>
-                    <div>
-                        <input type="datetime-local" value={formatDateTime(bolus.delivered, 'bolus')} onChange={e => setBolus(prev => {
-                            return { ...prev, timeStamp: new Date(e.target.value) }
-                        })}></input>
-                    </div>
-                    <div></div>
-                    <div>
-                        <button onClick={saveBolus}>Bolus Delivered</button><br />
-                    </div>
-                </div>
-            </> : <>
+                </section>
+            </> : <section>
                 <p>Please set all <Link href="/settings">Settings</Link> before using this page.</p>
-            </>}
+            </section>}
 
-            <pre>{status}</pre>
+            <section>
 
+                <pre>{status}</pre>
+            </section>
         </Layout>
     )
 }

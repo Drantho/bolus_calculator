@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Layout from '@/components/layout/Layout';
 
 const history = () => {
@@ -44,28 +44,28 @@ const history = () => {
 
     // TODO timezone is set to MST, need to update so all can use
     const filterDate = history => {
-        if(startDay !== '') {
+        if (startDay !== '') {
             history = history.filter(item => {
                 // addHours(8) is to account for MST timezone
                 return new Date(item.timeStamp).toISOString() > new Date(startDay + ' UTC').addHours(8).toISOString();
             })
         }
-        if(endDay !== '') {
-            const endDate = new Date(new Date(endDay).setHours(23,59,59,999)).setDate(new Date(endDay).getDate() + 1);
+        if (endDay !== '') {
+            const endDate = new Date(new Date(endDay).setHours(23, 59, 59, 999)).setDate(new Date(endDay).getDate() + 1);
             history = history.filter(item => {
-                return dateCompare(new Date(item.timeStamp).setHours(0,0,0,0), endDate) <= 0;
+                return dateCompare(new Date(item.timeStamp).setHours(0, 0, 0, 0), endDate) <= 0;
             });
         }
         return history;
     }
 
     const filterReadings = history => {
-        if(minReading !== '') {
+        if (minReading !== '') {
             history = history.filter(item => {
                 return +item.value >= +minReading;
             })
         }
-        if(maxReading !== '') {
+        if (maxReading !== '') {
             history = history.filter(item => {
                 return +item.value <= +maxReading;
             })
@@ -90,13 +90,13 @@ const history = () => {
             return acc;
         }, {})
 
-        for(let key in historyByDayObj) {
+        for (let key in historyByDayObj) {
             historyByDayObj[key] = historyByDayObj[key].reduce((acc, item) => +acc + +item, 0) / historyByDayObj[key].length;
         }
 
         const _historyByDay = [];
 
-        for(let key in historyByDayObj) {
+        for (let key in historyByDayObj) {
             _historyByDay.push({
                 date: key,
                 value: historyByDayObj[key].toFixed(0)
@@ -113,12 +113,14 @@ const history = () => {
 
         setReadingHistory(prev => {
             console.log('setting reading history', prev)
-            return JSON.parse(window.localStorage.getItem('readingHistory')) || []})
+            return JSON.parse(window.localStorage.getItem('readingHistory')) || []
+        })
         setBolusHistory(_bolusHistory)
 
         setFilteredReadingHistory(prev => {
             console.log('setting filtered reading history', prev)
-            return JSON.parse(window.localStorage.getItem('readingHistory')) || []})
+            return JSON.parse(window.localStorage.getItem('readingHistory')) || []
+        })
         setFilteredBolusHistory(_bolusHistory)
         setLoaded(true);
     }, [])
@@ -129,75 +131,85 @@ const history = () => {
     }, [filteredReadingHistory]);
 
     useEffect(() => {
-        if(loaded) {
+        if (loaded) {
             setFilteredReadingHistory(filterDate(readingHistory));
         }
     }, [startDay, endDay])
 
     useEffect(() => {
-        if(loaded) {
+        if (loaded) {
             setFilteredReadingHistory(filterReadings(readingHistory));
         }
     }, [minReading, maxReading])
 
-    Date.prototype.addHours = function(h) {
-        this.setTime(this.getTime() + (h*60*60*1000));
+    Date.prototype.addHours = function (h) {
+        this.setTime(this.getTime() + (h * 60 * 60 * 1000));
         return this;
     }
 
     return (
         <Layout title="History">
-            <h1>History</h1>
-            {startDay}<br/>
-            {endDay}
-            <h2>Range</h2>
-            <label>
-                Start Day
-                <input type="date" value={startDay} onChange={e => setStartDay(e.target.value)} />
-                {startDay !== '' && <button onClick={() => setStartDay('')}>Clear</button>}
-            </label>
-            <label>
-                End Day
-                <input type="date" value={endDay} onChange={e => setEndDay(e.target.value)} />
-                {endDay !== '' && <button onClick={() => setEndDay('')}>Clear</button>}
-            </label>
-            <label>
-                Min Reading
-                <input type="number" value={minReading} onChange={e => setMinReading(e.target.value)} />
-                {minReading !== '' && <button onClick={() => setMinReading('')}>Clear</button>}
-            </label>
-            <label>
-                Max Reading
-                <input type="number" value={maxReading} onChange={e => setMaxReading(e.target.value)} />
-                {maxReading !== '' && <button onClick={() => setMaxReading('')}>Clear</button>}
-            </label>
+            <section>
+                <h1>History</h1>
+            </section>
 
-            <h2>Overall Average</h2>
+            <section>
+                {startDay}<br />
+                {endDay}
+                <h2>Range</h2>
+                <label>
+                    Start Day
+                    <input type="date" value={startDay} onChange={e => setStartDay(e.target.value)} />
+                    {startDay !== '' && <button onClick={() => setStartDay('')}>Clear</button>}
+                </label>
+                <label>
+                    End Day
+                    <input type="date" value={endDay} onChange={e => setEndDay(e.target.value)} />
+                    {endDay !== '' && <button onClick={() => setEndDay('')}>Clear</button>}
+                </label>
+                <label>
+                    Min Reading
+                    <input type="number" value={minReading} onChange={e => setMinReading(e.target.value)} />
+                    {minReading !== '' && <button onClick={() => setMinReading('')}>Clear</button>}
+                </label>
+                <label>
+                    Max Reading
+                    <input type="number" value={maxReading} onChange={e => setMaxReading(e.target.value)} />
+                    {maxReading !== '' && <button onClick={() => setMaxReading('')}>Clear</button>}
+                </label>
+            </section>
 
-            Average: {filteredReadingHistory.length ? (filteredReadingHistory?.reduce((acc, item) => +acc + +item.value, 0) / filteredReadingHistory.length).toFixed(0) : 'No readings'}<br/>
+            <section>
+                <h2>Overall Average</h2>
 
-            <h2>Average by day</h2>
+                Average: {filteredReadingHistory.length ? (filteredReadingHistory?.reduce((acc, item) => +acc + +item.value, 0) / filteredReadingHistory.length).toFixed(0) : 'No readings'}<br />
 
-            {historyByDay.length ? historyByDay.map((day, index) => <div key={index}>{day.date}: {day.value}</div>) : 'No readings'}
+                <h2>Average by day</h2>
 
-            <h2>Average by hour</h2>
+                {historyByDay.length ? historyByDay.map((day, index) => <div key={index}>{day.date}: {day.value}</div>) : 'No readings'}
+            </section>
+            <section>
+                <h2>Average by hour</h2>
 
-            {hours.map((hour, index) => hour.length ? <div key={index}>{index}: {(hour.reduce((acc, item) => +acc + +item, 0) / hour.length).toFixed(0) }</div> : <div key={index}>{index}: No readings</div>)}
+                {hours.map((hour, index) => hour.length ? <div key={index}>{index}: {(hour.reduce((acc, item) => +acc + +item, 0) / hour.length).toFixed(0)}</div> : <div key={index}>{index}: No readings</div>)}
 
-            <h2>Blood Sugar Reading History</h2>
-            <h3>Data</h3>
-            {filteredReadingHistory.map(item => <div key={item.timeStamp}>{new Date(item.timeStamp).toDateString()} {new Date(item.timeStamp).toLocaleTimeString()} - {item.value}<p>{item.notes}</p></div>)}
-            <h3>Raw</h3>
-            <pre>
-{JSON.stringify(filteredReadingHistory, null, 2)}
-            </pre>
-            <h2>Bolus History</h2>
-            <h3>Data</h3>
-            {bolusHistory.map(item => <div key={item.timeStamp}>{new Date(item.timeStamp).toDateString()} {new Date(item.timeStamp).toLocaleTimeString()} - {item.value}</div>)}
-            <h3>Raw</h3>
-            <pre>
-{JSON.stringify(bolusHistory, null, 2)}
-            </pre>
+                <h2>Blood Sugar Reading History</h2>
+                <h3>Data</h3>
+                {filteredReadingHistory.map(item => <div key={item.timeStamp}>{new Date(item.timeStamp).toDateString()} {new Date(item.timeStamp).toLocaleTimeString()} - {item.value}<p>{item.notes}</p></div>)}
+                <h3>Raw</h3>
+                <pre>
+                    {JSON.stringify(filteredReadingHistory, null, 2)}
+                </pre>
+            </section>
+            <section>
+                <h2>Bolus History</h2>
+                <h3>Data</h3>
+                {bolusHistory.map(item => <div key={item.timeStamp}>{new Date(item.timeStamp).toDateString()} {new Date(item.timeStamp).toLocaleTimeString()} - {item.value}</div>)}
+                <h3>Raw</h3>
+                <pre>
+                    {JSON.stringify(bolusHistory, null, 2)}
+                </pre>
+            </section>
         </Layout>
     )
 }

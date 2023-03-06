@@ -8,34 +8,36 @@ const settings = () => {
 
     return (
         <Layout title="Settings">
-            <h1>settings</h1>
-            <div className='input-table'>
-                <div>
-                    <label>
-                        Insulin Ratio
-                    </label>
+            <section>
+                <h1>settings</h1>
+                <div className='input-table'>
+                    <div>
+                        <label>
+                            Insulin Ratio
+                        </label>
+                    </div>
+                    <div>
+                        <input type="number" value={insulinRatio} onChange={e => setInsulinRatio(e.target.value)} />
+                    </div>
+                    <div>
+                        <label>
+                            Carb Ratio
+                        </label>
+                    </div>
+                    <div>
+                        <input type="number" value={carbRatio} onChange={e => setCarbRatio(e.target.value)} />
+                    </div>
+                    <div>
+                        <label>
+                            Target Bloodsugar
+                        </label>
+                    </div>
+                    <div>
+                        <input type="number" value={targetBloodSugar} onChange={e => setTargetBloodSugar(e.target.value)} />
+                    </div>
                 </div>
-                <div>
-                    <input type="number" value={insulinRatio} onChange={e => setInsulinRatio(e.target.value)} />
-                </div>
-                <div>
-                    <label>
-                        Carb Ratio
-                    </label>
-                </div>
-                <div>
-                    <input type="number" value={carbRatio} onChange={e => setCarbRatio(e.target.value)} />
-                </div>
-                <div>
-                    <label>
-                        Target Bloodsugar
-                    </label>
-                </div>
-                <div>
-                    <input type="number" value={targetBloodSugar} onChange={e => setTargetBloodSugar(e.target.value)} />
-                </div>
-            </div>
-            <button onClick={saveSettings}>Save</button>
+                <button onClick={saveSettings}>Save</button>
+            </section>
         </Layout>
     )
 }

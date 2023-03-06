@@ -9,16 +9,15 @@ body {
     background-color: #EFEFEF;
 }
 
-main, nav {
-    max-width: 1000px;
-    margin: 0 auto;
-    background-color: white;
-    box-sizing: border-box;
-}
-
 main {
+    width: 100%;
+    max-width: 1000px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    position: relative;
     min-height: 80vh;
-    padding: 20px 50px;
+    padding: 70px 0 0 0;
+    background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -56,17 +55,60 @@ button:hover {
     box-shadow: 1px 1px 7px #000;
 }
 
-.main-links {
-    display: flex;
+section {
+    padding: 20px;
+}
+
+nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: lightsteelblue;
+    padding: 0;
+    display: block;
+    width: 100%;
+}
+
+nav .main-links {
     list-style: none;
     padding: 0;
-    margin: 0;
-    background-color: lightsteelblue;
+    margin: 0 auto;
     font-weight: 700;
+    width: 100%;
+    height: 100%;
+}
+
+nav .main-links li {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+nav .main-links.open li {
+    display: block;}
+
+nav .main-links li:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    background-color: steelblue;
+}
+
+nav .mobile-menu {
+    padding-right: 40px;
+    display: flex;
+    justify-content: space-between;
+    width: 60px;
+}
+
+.material-symbols-outlined {
+    color: white;
 }
 
 .main-links li {
-    padding: 10px;
+    padding: 10px 20px;
 }
 
 .main-links li.active {
@@ -77,6 +119,7 @@ button:hover {
     text-decoration: none;
     text-transform: capitalize;
     color: white;
+    display: block;
 }
 
 .main-links li a:hover {
@@ -100,4 +143,20 @@ button:hover {
 
 .input-table div:nth-child(odd) {
     justify-content: flex-end;
+}
+
+@media screen and (min-width: 800px) {
+    .main-links {
+        display: flex;
+    }
+
+    nav .main-links li {
+        display: block;
+        width: unset;
+        padding: 20px;
+    }
+
+    nav .mobile-menu {
+        display: none;
+    }
 }
