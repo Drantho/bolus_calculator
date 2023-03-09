@@ -91,7 +91,6 @@ const bolusCalc = () => {
         if (bloodSugar.value !== null) {
             _correction = ((bloodSugar.value - targetBloodSugar) / insulinRatio).toFixed(2);
             if (_correction - _insulinOnBoard < 0) {
-                _correction = 0;
                 if (bloodSugar.value !== null) {
                     setStatus(prev => prev + '\nInsulin on board is greater than calculated correction bolus. Correction may not be necessary.')
                 }
@@ -107,7 +106,6 @@ const bolusCalc = () => {
             setStatus(prev => prev + '\nBloodsugar Reading Saved!\n' + JSON.stringify(bloodSugar, null, 2))
         }
 
-        // let _bolus = ((((bloodSugar.value - targetBloodSugar) / insulinRatio) - _insulinOnBoard) + (carbs / carbRatio)).toFixed(2);
         let _carbDose = (carbs / carbRatio).toFixed(2);
 
         let _bolus = +_correction + +_carbDose;
@@ -132,9 +130,7 @@ const bolusCalc = () => {
         })
     }
 
-    const formatDateTime = (date, caller) => {
-        console.log('date', date)
-        console.log('caller', caller)
+    const formatDateTime = (date) => {
         let _date = date ? new Date(date) : new Date();
         return (new Date(_date.getTime() - _date.getTimezoneOffset() * 60000).toISOString()).slice(0, -1);
     }
@@ -164,7 +160,7 @@ const bolusCalc = () => {
                             </label>
                         </div>
                         <div>
-                            <input type="datetime-local" value={formatDateTime(bloodSugar.timeStamp, 'blood sugar')} onChange={e => setBloodSugar(prev => {
+                            <input type="datetime-local" value={formatDateTime(bloodSugar.timeStamp)} onChange={e => setBloodSugar(prev => {
                                 return { ...prev, timeStamp: new Date(e.target.value) }
                             })}></input>
                         </div>
@@ -217,7 +213,7 @@ const bolusCalc = () => {
                             </label>
                         </div>
                         <div>
-                            <input type="datetime-local" value={formatDateTime(bolus.delivered, 'bolus')} onChange={e => setBolus(prev => {
+                            <input type="datetime-local" value={formatDateTime(bolus.delivered)} onChange={e => setBolus(prev => {
                                 return { ...prev, timeStamp: new Date(e.target.value) }
                             })}></input>
                         </div>
