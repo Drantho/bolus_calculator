@@ -94,7 +94,7 @@ const bolusCalc = () => {
 
             } else if (_correction - _insulinOnBoard < 0) {
                 if (bloodSugar.value !== null) {
-                    setStatus(prev => prev + '\nInsulin on board is greater than calculated correction bolus. Correction may not be necessary.')
+                    setStatus(prev => prev + '\n Insulin on board is greater than calculated correction bolus. Correction may not be necessary.')
                 }
             } else {
                 _correction = (_correction - _insulinOnBoard).toFixed(2);
@@ -105,15 +105,14 @@ const bolusCalc = () => {
             const readingHistory = JSON.parse(window.localStorage.getItem('readingHistory')) || [];
             readingHistory.push(bloodSugar);
             window.localStorage.setItem('readingHistory', JSON.stringify(readingHistory));
-            setStatus(prev => prev + '\nBloodsugar Reading Saved!\n' + JSON.stringify(bloodSugar, null, 2))
+            setStatus(prev => prev + 'Bloodsugar Reading Saved!<br/><br/>')
         }
 
         let _carbDose = (carbs / carbRatio).toFixed(2);
 
         let _bolus = +_correction + +_carbDose;
         if(_bolus < 0){
-            setStatus(prev => prev + `\nBlood sugar is too low. Eating carbs may be necessary. Recommended carb dose is ${(-1 * _correction * carbRatio).toFixed(0)} grams.`)
-            // setStatus(prev => prev + `\nBlood sugar is too low. Eating carbs may be necessary. Recommended carb dose is ${(-1 * _correction * carbRatio).toFixed(0)} grams. (Carbs) on board calculated from insulin on board ${ (_insulinOnBoard * carbRatio).toFixed(0)} `)
+            setStatus(prev => prev + `Blood sugar is too low. Eating carbs may be necessary. Recommended carb dose is ${(-1 * _correction * carbRatio).toFixed(0)} grams.`)
             _bolus = 0;
         }
 
@@ -231,11 +230,10 @@ const bolusCalc = () => {
             </> : <section>
                 <p>Please set all <Link href="/settings">Settings</Link> before using this page.</p>
             </section>}
-
             <section>
-
-                <pre>{status}</pre>
+                <p dangerouslySetInnerHTML={{ __html: status }}></p>
             </section>
+
         </Layout>
     )
 }
